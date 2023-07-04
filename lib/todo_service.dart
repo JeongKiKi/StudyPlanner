@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'main.dart';
 
 class Todo {
   Todo({
@@ -34,10 +32,7 @@ class Todo {
 }
 
 class TodoService extends ChangeNotifier {
-  List<Todo> todoList = [
-    Todo(content: '할일 1'),
-    Todo(content: '할일 2'),
-  ];
+  List<Todo> todoList = [];
   List<UniqueKey> deleteList = [];
 
   createTodo({required String content}) {
