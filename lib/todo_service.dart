@@ -5,17 +5,31 @@ import 'main.dart';
 class Todo {
   Todo({
     required this.content,
+    this.done = false,
+    this.updatedAt,
   });
 
   UniqueKey id = UniqueKey();
   String content;
+  bool done;
+  DateTime? updatedAt;
 
   Map toJson() {
-    return {'content': content};
+    return {
+      'id': id,
+      'content': content,
+      'isDone': done,
+      'updatedAt': updatedAt?.toIso8601String(),
+    };
   }
 
   factory Todo.fromJson(json) {
-    return Todo(content: json['content']);
+    return Todo(
+      content: json['content'],
+      done: json['isDone'] ?? false,
+      updatedAt:
+          json['updatedAt'] == null ? null : DateTime.parse(json['updatedAt']),
+    );
   }
 }
 
@@ -40,7 +54,6 @@ class TodoService extends ChangeNotifier {
 
   deleteTodo() {
     todoList.removeWhere((todo) => deleteList.contains(todo.id));
-    print(todoList.length);
     notifyListeners();
   }
 }

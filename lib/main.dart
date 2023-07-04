@@ -1,6 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:studdyplanner/todolist_service.dart';
+import 'package:studdyplanner/todo_service.dart';
+import 'package:table_calendar/table_calendar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+late SharedPreferences prefs;
 
 void main() async {
   runApp(
@@ -14,25 +19,36 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      home: MyHomePage(),
     );
   }
 }
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
+class MyHomePage extends StatefulWidget {
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+typedef OnDaySelected = void Function(
+    DateTime selectedDay, DateTime focusedDay);
+
+class _MyHomePageState extends State<MyHomePage> {
+  DateTime selectedDay = DateTime(
+    DateTime.now().year,
+    DateTime.now().month,
+    DateTime.now().day,
+  );
+  DateTime focusedDay = DateTime.now();
   bool isDeleteMode = false;
 
   @override
@@ -75,6 +91,22 @@ class _HomePageState extends State<HomePage> {
               ? Center(child: Text("메모를 작성해 주세요"))
               : Column(
                   children: [
+                    TableCalendar(
+                      firstDay: DateTime.utc(2021, 10, 16),
+                      lastDay: DateTime.utc(2030, 3, 14),
+                      focusedDay: DateTime.now(),
+                      calendarFormat: CalendarFormat.week,
+                      onDaySelected:
+                          (DateTime selectedDay, DateTime focusedDay) {
+                        setState(() {
+                          this.selectedDay = selectedDay;
+                          this.focusedDay = focusedDay;
+                        });
+                      },
+                      selectedDayPredicate: (DateTime day) {
+                        return isSameDay(selectedDay, day);
+                      },
+                    ),
                     Expanded(
                       child: ListView.builder(
                         itemCount: todoList.length,
