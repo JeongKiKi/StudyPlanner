@@ -13,7 +13,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -46,20 +46,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
   DateTime focusedDay = DateTime.now();
 
+  List<Todo> todoList = [
+    Todo(content: '새 메모 1', done: false), // 더미(dummy) 데이터
+    Todo(content: '새 메모 2', done: false), // 더미(dummy) 데이터
+  ];
+
   @override
   Widget build(BuildContext context) {
-    // TodoService todoService = context.read<TodoService>();
-
-    // List<Todo> todoList = todoService.todoList;
-
-    List<Todo> todoList = [
-      Todo(content: '새 메모 1'), // 더미(dummy) 데이터
-      Todo(content: '새 메모 2'), // 더미(dummy) 데이터
-    ];
-
     return Scaffold(
       appBar: AppBar(
-        title: Center(
+        title: const Center(
           child: Text('투두리스트'),
         ),
         actions: [
@@ -68,14 +64,14 @@ class _MyHomePageState extends State<MyHomePage> {
               // 첫 번째 액션 버튼을 눌렀을 때 실행할 동작을 정의하세요.
               // 예: 데이터 삭제 기능
             },
-            icon: Icon(Icons.delete),
+            icon: const Icon(Icons.delete),
           ),
           IconButton(
             onPressed: () {
               // 두 번째 액션 버튼을 눌렀을 때 실행할 동작을 정의하세요.
               // 예: 할 일 추가 기능
             },
-            icon: Icon(Icons.add),
+            icon: const Icon(Icons.add),
           ),
         ],
       ),
@@ -119,4 +115,14 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+}
+
+class Todo {
+  final String content;
+  bool done;
+
+  Todo({
+    required this.content,
+    this.done = false,
+  });
 }
