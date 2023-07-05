@@ -51,4 +51,9 @@ class TodoService extends ChangeNotifier {
     todoList.removeWhere((todo) => deleteList.contains(todo.id));
     notifyListeners();
   }
+
+  removeTodo(Todo todo) {
+    todoList.removeLast();
+    notifyListeners();
+  }
 }
