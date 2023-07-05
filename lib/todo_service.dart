@@ -46,8 +46,7 @@ class TodoService extends ChangeNotifier {
   );
   List<UniqueKey> deleteList = [];
 
-  createTodo({required String content}) {
-    DateTime createTime = createTimeForEvent(DateTime.now());
+  createTodo({required String content, required DateTime createTime}) {
     Todo todo = Todo(content: content, createAt: createTime);
     todoList.add(todo);
     if (events[createTime] != null) {
