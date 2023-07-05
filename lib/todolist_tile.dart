@@ -19,7 +19,7 @@ class _TodoListTileState extends State<TodoListTile> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: isComplete ? Colors.grey[350] : null,
+      color: isComplete ? Colors.grey[200] : null,
       child: ListTile(
         title: Text(
           widget.todo.content,
