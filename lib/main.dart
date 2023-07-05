@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:studdyplanner/todo_detail_dialog.dart';
 import 'package:studdyplanner/todo_service.dart';
 import 'package:studdyplanner/todolist_tile.dart';
+import 'package:studdyplanner/utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -44,6 +45,7 @@ typedef OnDaySelected = void Function(
     DateTime selectedDay, DateTime focusedDay);
 
 class _MyHomePageState extends State<MyHomePage> {
+  late final ValueNotifier<List<Todo>> selectedEvents;
   DateTime selectedDay = DateTime(
     DateTime.now().year,
     DateTime.now().month,
@@ -57,7 +59,6 @@ class _MyHomePageState extends State<MyHomePage> {
     return Consumer<TodoService>(
       builder: (context, todoService, child) {
         List<Todo> todoList = todoService.todoList;
-
         return Scaffold(
           appBar: AppBar(
             title: Text("mymemo"),
