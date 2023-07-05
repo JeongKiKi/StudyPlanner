@@ -1,7 +1,5 @@
 import 'dart:collection';
-
 import 'package:flutter/material.dart';
-import 'package:studdyplanner/utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class Todo {
