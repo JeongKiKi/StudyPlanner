@@ -88,27 +88,26 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ],
           ),
-          body: todoList.isEmpty
-              ? Center(child: Text("메모를 작성해 주세요"))
-              : Column(
-                  children: [
-                    TableCalendar(
-                      firstDay: DateTime.utc(2021, 10, 16),
-                      lastDay: DateTime.utc(2030, 3, 14),
-                      focusedDay: DateTime.now(),
-                      calendarFormat: CalendarFormat.week,
-                      onDaySelected:
-                          (DateTime selectedDay, DateTime focusedDay) {
-                        setState(() {
-                          this.selectedDay = selectedDay;
-                          this.focusedDay = focusedDay;
-                        });
-                      },
-                      selectedDayPredicate: (DateTime day) {
-                        return isSameDay(selectedDay, day);
-                      },
-                    ),
-                    Expanded(
+          body: Column(
+            children: [
+              TableCalendar(
+                firstDay: DateTime.utc(2021, 10, 16),
+                lastDay: DateTime.utc(2030, 3, 14),
+                focusedDay: DateTime.now(),
+                calendarFormat: CalendarFormat.week,
+                onDaySelected: (DateTime selectedDay, DateTime focusedDay) {
+                  setState(() {
+                    this.selectedDay = selectedDay;
+                    this.focusedDay = focusedDay;
+                  });
+                },
+                selectedDayPredicate: (DateTime day) {
+                  return isSameDay(selectedDay, day);
+                },
+              ),
+              todoList.isEmpty
+                  ? Expanded(child: Center(child: Text("메모를 작성해 주세요")))
+                  : Expanded(
                       child: ListView.builder(
                         itemCount: todoList.length,
                         itemBuilder: (context, index) {
@@ -125,25 +124,25 @@ class _MyHomePageState extends State<MyHomePage> {
                         },
                       ),
                     ),
-                    Visibility(
-                      visible: isDeleteMode,
-                      child: Container(
-                        color: Colors.red,
-                        height: 60,
-                        width: double.infinity,
-                        child: TextButton(
-                          onPressed: () {
-                            todoService.deleteTodo();
-                          },
-                          child: Text(
-                            "삭제하기",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
+              Visibility(
+                visible: isDeleteMode,
+                child: Container(
+                  color: Colors.red,
+                  height: 60,
+                  width: double.infinity,
+                  child: TextButton(
+                    onPressed: () {
+                      todoService.deleteTodo();
+                    },
+                    child: Text(
+                      "삭제하기",
+                      style: TextStyle(color: Colors.white),
                     ),
-                  ],
+                  ),
                 ),
+              ),
+            ],
+          ),
         );
       },
     );
