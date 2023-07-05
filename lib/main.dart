@@ -76,7 +76,9 @@ class _MyHomePageState extends State<MyHomePage> {
               IconButton(
                 onPressed: () {
                   todoService.createTodo(
-                      content: '', createTime: createTimeForEvent(selectedDay));
+                    content: '',
+                    createTime: createTimeForEvent(selectedDay),
+                  );
                   showDialog(
                     context: context,
                     builder: (context) {
@@ -99,6 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 lastDay: DateTime.utc(2030, 3, 14),
                 focusedDay: DateTime.now(),
                 calendarFormat: CalendarFormat.week,
+                eventLoader: todoService.getEvents,
                 onDaySelected: (DateTime selectedDay, DateTime focusedDay) {
                   setState(() {
                     this.selectedDay = selectedDay;
