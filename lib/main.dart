@@ -59,6 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Consumer<TodoService>(
       builder: (context, todoService, child) {
         List<Todo> todoList = todoService.todoList;
+        List<Todo> events = todoService.getEvents(selectedDay);
         return Scaffold(
           appBar: AppBar(
             title: Text("mymemo"),
@@ -70,10 +71,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   });
                 },
                 icon: Icon(Icons.delete),
+                color: isDeleteMode ? Colors.red : Colors.black,
               ),
               IconButton(
                 onPressed: () {
-                  todoService.createTodo(content: '');
+                  todoService.createTodo(
+                      content: '', createTime: createTimeForEvent(selectedDay));
                   showDialog(
                     context: context,
                     builder: (context) {
@@ -112,9 +115,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     Expanded(
                       child: ListView.builder(
-                        itemCount: todoList.length,
+                        itemCount: events.length,
                         itemBuilder: (context, index) {
-                          Todo todo = todoList[index];
+                          Todo todo = events[index];
                           return isDeleteMode
                               ? TodoListDeleteTile(
                                   todo: todo,
