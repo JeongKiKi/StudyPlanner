@@ -1,34 +1,55 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:studdyplanner/todo_detail_dialog.dart';
 import 'package:studdyplanner/todo_service.dart';
 
 // 기본 투두리스트 타일
-class TodoListTile extends StatelessWidget {
+class TodoListTile extends StatefulWidget {
   const TodoListTile({required this.index, required this.todo});
   final Todo todo;
   final int index;
 
   @override
+  State<TodoListTile> createState() => _TodoListTileState();
+}
+
+class _TodoListTileState extends State<TodoListTile> {
+  bool isComplete = false;
+  @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(
-        todo.content,
-        maxLines: 3,
-        overflow: TextOverflow.ellipsis,
-      ),
-      onTap: () {
-        showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              content: TodoDeailDialog(
-                index: index,
-              ),
-            );
+    return Container(
+      color: isComplete ? Colors.grey[350] : null,
+      child: ListTile(
+        title: Text(
+          widget.todo.content,
+          maxLines: 3,
+          overflow: TextOverflow.ellipsis,
+        ),
+        //완료 버튼
+        trailing: GestureDetector(
+          onTap: () {
+            setState(() {
+              isComplete = !isComplete;
+            });
           },
-        );
-      },
+          child: Icon(
+            isComplete ? CupertinoIcons.nosign : CupertinoIcons.check_mark,
+          ),
+        ),
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                content: TodoDeailDialog(
+                  index: widget.index,
+                ),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
