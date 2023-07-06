@@ -59,7 +59,8 @@ class _MyHomePageState extends State<MyHomePage> {
     return Consumer<TodoService>(
       builder: (context, todoService, child) {
         List<Todo> todoList = todoService.todoList;
-        List<Todo> events = todoService.getEvents(selectedDay);
+        List<Todo> events =
+            todoService.getEvents(createTimeForEvent(selectedDay));
         return Scaffold(
           appBar: AppBar(
             title: Text("mymemo"),
