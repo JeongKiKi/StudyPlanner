@@ -100,17 +100,17 @@ class TodoService extends ChangeNotifier {
   }
 
   saveMemoList() {
-    List todoJsonList = todoList.map((memo) => memo.toJson()).toList();
+    List todoJsonList = todoList.map((todo) => todo.toJson()).toList();
     String jsonString = jsonEncode(todoJsonList);
-    prefs.setString('memoList', jsonString);
+    prefs.setString('TodoList', jsonString);
   }
 
   loadMemoList() {
-    String? jsonString = prefs.getString('memoList');
+    String? jsonString = prefs.getString('TodoList');
     if (jsonString == null) return; // null 이면 로드하지 않음
-    List memoJsonList = jsonDecode(jsonString);
+    List todoJsonList = jsonDecode(jsonString);
 
-    todoList = memoJsonList.map((json) => Todo.fromJson(json)).toList();
+    todoList = todoJsonList.map((json) => Todo.fromJson(json)).toList();
     for (var todo in todoList) {
       addEvent(todo);
     }
