@@ -82,10 +82,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   );
                   showDialog(
                     context: context,
+                    barrierDismissible: false, // 배경 터치 시 닫히지 않도록 설정
                     builder: (context) {
                       return AlertDialog(
                         content: TodoDeailDialog(
                           index: todoService.todoList.length - 1,
+                          pressAddBtn: true,
                         ),
                       );
                     },

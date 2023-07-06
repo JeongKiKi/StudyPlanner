@@ -3,9 +3,11 @@ import 'package:provider/provider.dart';
 import 'package:studdyplanner/todo_service.dart';
 
 class TodoDeailDialog extends StatelessWidget {
-  const TodoDeailDialog({required this.index});
+  const TodoDeailDialog({required this.index, required this.pressAddBtn});
+  // const TodoDeailDialog({required this.aaa});
 
   final int index;
+  final bool pressAddBtn;
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +78,9 @@ class TodoDeailDialog extends StatelessWidget {
                 flex: 1,
                 child: TextButton(
                   onPressed: () {
-                    todoService.removeTodo(todo);
+                    if (pressAddBtn == true) {
+                      todoService.removeTodo(todo);
+                    }
                     Navigator.pop(context);
                   },
                   child: Text(
