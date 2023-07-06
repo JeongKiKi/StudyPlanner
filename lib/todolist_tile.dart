@@ -70,10 +70,11 @@ class TodoListDeleteTile extends StatefulWidget {
 }
 
 class _TodoListDeleteTileState extends State<TodoListDeleteTile> {
-  bool? isSeleted = false;
+  // bool? isSeleted = false;
   @override
   Widget build(BuildContext context) {
     TodoService todoService = context.read<TodoService>();
+    bool? isSelected = todoService.deleteList.contains(widget.todo.id);
 
     return CheckboxListTile(
       title: Text(
@@ -82,10 +83,10 @@ class _TodoListDeleteTileState extends State<TodoListDeleteTile> {
         overflow: TextOverflow.ellipsis,
       ),
       controlAffinity: ListTileControlAffinity.leading,
-      value: isSeleted,
+      value: isSelected,
       onChanged: (bool? value) {
         setState(() {
-          isSeleted = value;
+          isSelected = value;
           if (value != null && value) {
             todoService.deleteList.add(widget.todo.id);
           } else if (value != null && !value) {
