@@ -44,6 +44,7 @@ class _TodoListTileState extends State<TodoListTile> {
               return AlertDialog(
                 content: TodoDeailDialog(
                   index: widget.index,
+                  pressAddBtn: false,
                 ),
               );
             },
