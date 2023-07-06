@@ -76,9 +76,7 @@ class TodoDeailDialog extends StatelessWidget {
                 flex: 1,
                 child: TextButton(
                   onPressed: () {
-                    if (todo.content.isEmpty) {
-                      todoService.removeTodo(todo);
-                    }
+                    todoService.removeTodo(todo);
                     Navigator.pop(context);
                   },
                   child: Text(
