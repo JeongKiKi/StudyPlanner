@@ -1,6 +1,9 @@
 import 'dart:collection';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+
+import 'main.dart';
 
 class Todo {
   Todo({
@@ -10,7 +13,7 @@ class Todo {
     required this.createAt,
   });
 
-  UniqueKey id = UniqueKey();
+  String id = UniqueKey().toString();
   String content;
   bool done;
   DateTime? updatedAt;
@@ -33,32 +36,34 @@ class Todo {
         updatedAt: json['updatedAt'] == null
             ? null
             : DateTime.parse(json['updatedAt']),
-        createAt: json['createAt']);
+        createAt: DateTime.parse(json['createAt']));
   }
 }
 
 class TodoService extends ChangeNotifier {
+  TodoService() {
+    loadMemoList();
+  }
   List<Todo> todoList = [];
-  final events = LinkedHashMap<DateTime, List<Todo>>(
+  LinkedHashMap<DateTime, List<Todo>> events =
+      LinkedHashMap<DateTime, List<Todo>>(
     equals: isSameDay,
   );
-  List<UniqueKey> deleteList = [];
+  List<String> deleteList = [];
 
   createTodo({required String content, required DateTime createTime}) {
     Todo todo = Todo(content: content, createAt: createTime);
     todoList.add(todo);
-    if (events[createTime] != null) {
-      events[createTime]!.add(todo);
-    } else {
-      events[createTime] = [todo];
-    }
+    addEvent(todo);
     notifyListeners();
+    saveMemoList();
   }
 
   updateTodo({required int index, required String content}) {
     Todo todo = todoList[index];
     todo.content = content;
     notifyListeners();
+    saveMemoList();
   }
 
   deleteTodo() {
@@ -76,6 +81,7 @@ class TodoService extends ChangeNotifier {
     });
     todoList.removeWhere((todo) => deleteList.contains(todo.id));
     notifyListeners();
+    saveMemoList();
   }
 
   removeTodo(Todo todo) {
@@ -86,9 +92,35 @@ class TodoService extends ChangeNotifier {
     });
     todoList.removeLast();
     notifyListeners();
+    saveMemoList();
   }
 
   List<Todo> getEvents(DateTime day) {
     return events[day] ?? [];
+  }
+
+  saveMemoList() {
+    List todoJsonList = todoList.map((memo) => memo.toJson()).toList();
+    String jsonString = jsonEncode(todoJsonList);
+    prefs.setString('memoList', jsonString);
+  }
+
+  loadMemoList() {
+    String? jsonString = prefs.getString('memoList');
+    if (jsonString == null) return; // null 이면 로드하지 않음
+    List memoJsonList = jsonDecode(jsonString);
+
+    todoList = memoJsonList.map((json) => Todo.fromJson(json)).toList();
+    for (var todo in todoList) {
+      addEvent(todo);
+    }
+  }
+
+  addEvent(Todo todo) {
+    if (events[todo.createAt] != null) {
+      events[todo.createAt]!.add(todo);
+    } else {
+      events[todo.createAt] = [todo];
+    }
   }
 }
