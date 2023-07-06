@@ -115,6 +115,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 selectedDayPredicate: (DateTime day) {
                   return isSameDay(selectedDay, day);
                 },
+                onFormatChanged: (format) {
+                  setState(() {
+                    DateTime today = createTimeForEvent(DateTime.now());
+                    focusedDay = today;
+                  });
+                },
               ),
               todoList.isEmpty
                   ? Expanded(child: Center(child: Text("메모를 작성해 주세요")))
