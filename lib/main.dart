@@ -45,7 +45,6 @@ typedef OnDaySelected = void Function(
     DateTime selectedDay, DateTime focusedDay);
 
 class _MyHomePageState extends State<MyHomePage> {
-  late final ValueNotifier<List<Todo>> selectedEvents;
   DateTime selectedDay = DateTime(
     DateTime.now().year,
     DateTime.now().month,
@@ -100,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
               TableCalendar(
                 firstDay: DateTime.utc(2021, 10, 16),
                 lastDay: DateTime.utc(2030, 3, 14),
-                focusedDay: DateTime.now(),
+                focusedDay: focusedDay,
                 calendarFormat: CalendarFormat.week,
                 eventLoader: todoService.getEvents,
                 onDaySelected: (DateTime selectedDay, DateTime focusedDay) {
