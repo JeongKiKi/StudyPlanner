@@ -85,6 +85,7 @@ class TodoService extends ChangeNotifier {
       }
     });
     todoList.removeWhere((todo) => deleteCheckList.contains(todo.id));
+    deleteCheckList.clear();
     notifyListeners();
     saveMemoList();
   }
