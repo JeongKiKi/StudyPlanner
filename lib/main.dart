@@ -60,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Consumer<TodoService>(
       builder: (context, todoService, child) {
         // 달력에 선택된 날들의 투두리스트들을 모아놓은 변수
-        List<Todo> todoList =
+        List<Todo> selectDayTodoList =
             todoService.getTodoList(createTimeForEvent(selectedDay));
         return Scaffold(
           appBar: AppBar(
@@ -119,16 +119,17 @@ class _MyHomePageState extends State<MyHomePage> {
                   setState(() {
                     DateTime today = createTimeForEvent(DateTime.now());
                     focusedDay = today;
+                    selectedDay = today;
                   });
                 },
               ),
-              todoList.isEmpty
+              selectDayTodoList.isEmpty
                   ? Expanded(child: Center(child: Text("할일을 작성해 주세요")))
                   : Expanded(
                       child: ListView.builder(
-                        itemCount: todoList.length,
+                        itemCount: selectDayTodoList.length,
                         itemBuilder: (context, index) {
-                          Todo todo = todoList[index];
+                          Todo todo = selectDayTodoList[index];
                           return isDeleteMode
                               ? TodoListDeleteTile(
                                   todo: todo,
