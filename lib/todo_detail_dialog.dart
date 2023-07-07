@@ -4,7 +4,6 @@ import 'package:studdyplanner/todo_service.dart';
 
 class TodoDeailDialog extends StatelessWidget {
   const TodoDeailDialog({required this.index, required this.pressAddBtn});
-  // const TodoDeailDialog({required this.aaa});
 
   final int index;
   final bool pressAddBtn;
@@ -77,16 +76,47 @@ class TodoDeailDialog extends StatelessWidget {
               Expanded(
                 flex: 1,
                 child: TextButton(
-                  onPressed: () {
-                    if (pressAddBtn == true) {
-                      todoService.removeTodo(todo);
-                    }
-                    Navigator.pop(context);
-                  },
+                  onPressed: !pressAddBtn
+                      ? null
+                      : () {
+                          if (pressAddBtn == true &&
+                              todo.content.isEmpty == true) {
+                            todoService.removeTodo(todo);
+                            Navigator.pop(context);
+                            return;
+                          }
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('경고'),
+                                content: Text('정말로 취소하시겠습니까?'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: Text('확인'),
+                                    onPressed: () {
+                                      if (pressAddBtn == true) {
+                                        todoService.removeTodo(todo);
+                                      }
+                                      Navigator.pop(context);
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                  TextButton(
+                                    child: Text('취소'),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  )
+                                ],
+                              );
+                            },
+                          );
+                        },
                   child: Text(
                     "취소",
                     style: TextStyle(
-                      color: Colors.red,
+                      color: !pressAddBtn ? Colors.grey : Colors.red,
                     ),
                   ),
                 ),
