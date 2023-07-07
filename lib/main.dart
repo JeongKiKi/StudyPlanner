@@ -59,9 +59,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Consumer<TodoService>(
       builder: (context, todoService, child) {
-        List<Todo> todoList = todoService.todoList;
-        List<Todo> events =
-            todoService.getEvents(createTimeForEvent(selectedDay));
+        // 달력에 선택된 날들의 투두리스트들을 모아놓은 변수
+        List<Todo> todoList =
+            todoService.getTodoList(createTimeForEvent(selectedDay));
         return Scaffold(
           appBar: AppBar(
             title: Text("mymemo"),
@@ -105,7 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 lastDay: DateTime.utc(2030, 3, 14),
                 focusedDay: focusedDay,
                 calendarFormat: CalendarFormat.week,
-                eventLoader: todoService.getEvents,
+                eventLoader: todoService.getTodoList,
                 onDaySelected: (DateTime selectedDay, DateTime focusedDay) {
                   setState(() {
                     this.selectedDay = selectedDay;
@@ -123,12 +123,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
               ),
               todoList.isEmpty
-                  ? Expanded(child: Center(child: Text("메모를 작성해 주세요")))
+                  ? Expanded(child: Center(child: Text("할일을 작성해 주세요")))
                   : Expanded(
                       child: ListView.builder(
-                        itemCount: events.length,
+                        itemCount: todoList.length,
                         itemBuilder: (context, index) {
-                          Todo todo = events[index];
+                          Todo todo = todoList[index];
                           return isDeleteMode
                               ? TodoListDeleteTile(
                                   todo: todo,
@@ -149,7 +149,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   width: double.infinity,
                   child: TextButton(
                     onPressed: () {
-                      todoService.deleteTodo();
+                      todoService.deleteTodoList();
                     },
                     child: Text(
                       "삭제하기",

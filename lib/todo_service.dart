@@ -45,11 +45,15 @@ class TodoService extends ChangeNotifier {
     loadMemoList();
   }
   List<Todo> todoList = [];
+
+  // 달력클릭시 보이게 될 날짜별로 투두리스트를 모아놓은 해시맵 변수
   LinkedHashMap<DateTime, List<Todo>> events =
       LinkedHashMap<DateTime, List<Todo>>(
     equals: isSameDay,
   );
-  List<String> deleteList = [];
+
+  // 삭제 아이콘 클릭시 나오는 체크박스에 체크될 경우 담기게 되는 삭제리스트
+  List<String> deleteCheckList = [];
 
   createTodo({required String content, required DateTime createTime}) {
     Todo todo = Todo(content: content, createAt: createTime);
@@ -66,9 +70,10 @@ class TodoService extends ChangeNotifier {
     saveMemoList();
   }
 
-  deleteTodo() {
+  // deleteCheckList에 담긴 투두리스트들을 삭제하는 메서드
+  deleteTodoList() {
     List<Todo> deleteTodoList =
-        todoList.where((todo) => deleteList.contains(todo.id)).toList();
+        todoList.where((todo) => deleteCheckList.contains(todo.id)).toList();
     List<DateTime> deleteEventList = deleteTodoList.map(
       (todo) {
         return todo.createAt;
@@ -76,14 +81,15 @@ class TodoService extends ChangeNotifier {
     ).toList();
     events.forEach((key, value) {
       if (deleteEventList.contains(key)) {
-        value.removeWhere((todo) => deleteList.contains(todo.id));
+        value.removeWhere((todo) => deleteCheckList.contains(todo.id));
       }
     });
-    todoList.removeWhere((todo) => deleteList.contains(todo.id));
+    todoList.removeWhere((todo) => deleteCheckList.contains(todo.id));
     notifyListeners();
     saveMemoList();
   }
 
+  // 하나의 투두리스트를 삭제하는 메서드
   removeTodo(Todo todo) {
     events.forEach((key, value) {
       if (key == todo.createAt) {
@@ -95,7 +101,7 @@ class TodoService extends ChangeNotifier {
     saveMemoList();
   }
 
-  List<Todo> getEvents(DateTime day) {
+  List<Todo> getTodoList(DateTime day) {
     return events[day] ?? [];
   }
 

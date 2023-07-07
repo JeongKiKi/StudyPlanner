@@ -74,7 +74,7 @@ class _TodoListDeleteTileState extends State<TodoListDeleteTile> {
   @override
   Widget build(BuildContext context) {
     TodoService todoService = context.read<TodoService>();
-    bool? isSelected = todoService.deleteList.contains(widget.todo.id);
+    bool? isSelected = todoService.deleteCheckList.contains(widget.todo.id);
 
     return CheckboxListTile(
       title: Text(
@@ -88,9 +88,9 @@ class _TodoListDeleteTileState extends State<TodoListDeleteTile> {
         setState(() {
           isSelected = value;
           if (value != null && value) {
-            todoService.deleteList.add(widget.todo.id);
+            todoService.deleteCheckList.add(widget.todo.id);
           } else if (value != null && !value) {
-            todoService.deleteList.remove(widget.todo.id);
+            todoService.deleteCheckList.remove(widget.todo.id);
           }
         });
       },
