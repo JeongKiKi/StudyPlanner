@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -122,5 +123,18 @@ class TodoService extends ChangeNotifier {
     } else {
       events[todo.createAt] = [todo];
     }
+  }
+
+  updateDoneTodo({required String id}) {
+    Todo todo = todoList.firstWhere((todo) => todo.id == id);
+    todo.done = !todo.done;
+    // todoList = [
+    //   ...todoList.where((element) => !element.done),
+
+    //   ...todoList.where((element) => element.done)
+    // ];
+    notifyListeners();
+    saveMemoList();
+    print(todo);
   }
 }
