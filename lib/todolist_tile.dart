@@ -7,8 +7,8 @@ import 'package:studdyplanner/todo_service.dart';
 // 기본 투두리스트 타일
 class TodoListTile extends StatefulWidget {
   const TodoListTile({required this.index, required this.todo});
-  final Todo todo;
   final int index;
+  final Todo todo;
 
   @override
   State<TodoListTile> createState() => _TodoListTileState();
@@ -16,10 +16,13 @@ class TodoListTile extends StatefulWidget {
 
 class _TodoListTileState extends State<TodoListTile> {
   bool isComplete = false;
+
   @override
   Widget build(BuildContext context) {
+    TodoService todoService = context.read<TodoService>();
+
     return Container(
-      color: isComplete ? Colors.grey[200] : null,
+      color: widget.todo.done ? Colors.grey[200] : null,
       child: ListTile(
         title: Text(
           widget.todo.content,
@@ -30,11 +33,13 @@ class _TodoListTileState extends State<TodoListTile> {
         trailing: GestureDetector(
           onTap: () {
             setState(() {
-              isComplete = !isComplete;
+              todoService.updateDoneTodo(id: widget.todo.id);
             });
           },
           child: Icon(
-            isComplete ? CupertinoIcons.nosign : CupertinoIcons.check_mark,
+            widget.todo.done
+                ? CupertinoIcons.nosign
+                : CupertinoIcons.check_mark,
           ),
         ),
         onTap: () {
