@@ -48,7 +48,7 @@ class _TodoListTileState extends State<TodoListTile> {
             builder: (context) {
               return AlertDialog(
                 content: TodoDeailDialog(
-                  index: widget.index,
+                  todo: widget.todo,
                   pressAddBtn: false,
                 ),
               );

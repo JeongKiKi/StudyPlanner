@@ -3,15 +3,14 @@ import 'package:provider/provider.dart';
 import 'package:studdyplanner/todo_service.dart';
 
 class TodoDeailDialog extends StatelessWidget {
-  const TodoDeailDialog({required this.index, required this.pressAddBtn});
+  const TodoDeailDialog({required this.todo, required this.pressAddBtn});
 
-  final int index;
+  final Todo todo;
   final bool pressAddBtn;
 
   @override
   Widget build(BuildContext context) {
     TodoService todoService = context.read<TodoService>();
-    Todo todo = todoService.todoList[index];
     Size screenSize = MediaQuery.of(context).size;
     return Container(
       width: screenSize.width * 0.6,
@@ -53,7 +52,7 @@ class TodoDeailDialog extends StatelessWidget {
                 child: Center(
                   child: TextField(
                     onChanged: (value) {
-                      todoService.updateTodo(index: index, content: value);
+                      todoService.updateTodo(id: todo.id, content: value);
                     },
                     controller: TextEditingController(text: todo.content),
                     decoration: InputDecoration(

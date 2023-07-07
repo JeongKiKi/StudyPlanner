@@ -87,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     builder: (context) {
                       return AlertDialog(
                         content: TodoDeailDialog(
-                          index: todoService.todoList.length - 1,
+                          todo: todoService.todoList.last,
                           pressAddBtn: true,
                         ),
                       );
