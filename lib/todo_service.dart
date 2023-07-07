@@ -64,9 +64,16 @@ class TodoService extends ChangeNotifier {
     saveMemoList();
   }
 
-  updateTodo({required int index, required String content}) {
-    Todo todo = todoList[index];
+  updateTodo({required String id, required String content}) {
+    Todo todo = todoList.firstWhere((todo) => todo.id == id);
     todo.content = content;
+    notifyListeners();
+    saveMemoList();
+  }
+
+  updateDoneTodo({required String id}) {
+    Todo todo = todoList.firstWhere((todo) => todo.id == id);
+    todo.done = !todo.done;
     notifyListeners();
     saveMemoList();
   }
@@ -130,18 +137,5 @@ class TodoService extends ChangeNotifier {
     } else {
       events[todo.createAt] = [todo];
     }
-  }
-
-  updateDoneTodo({required String id}) {
-    Todo todo = todoList.firstWhere((todo) => todo.id == id);
-    todo.done = !todo.done;
-    // todoList = [
-    //   ...todoList.where((element) => !element.done),
-
-    //   ...todoList.where((element) => element.done)
-    // ];
-    notifyListeners();
-    saveMemoList();
-    print(todo);
   }
 }
